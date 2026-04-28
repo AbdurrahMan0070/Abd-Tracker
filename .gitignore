@@ -31,3 +31,11 @@ Thumbs.db
 
 # Prisma
 prisma/migrations/
+
+# Vercel (not using)
+.vercel
+vercel.json
+client/vercel.json
+
+# TypeScript (not using)
+tsconfig.json

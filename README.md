@@ -1,94 +1,258 @@
-# Abd Tracker – Smart Academic & Attendance Assistant
+# 🎓 Abd Tracker
 
-A full-stack college management platform with attendance tracking, prediction engine, assignments, timetable, and multi-role access.
+> Smart Academic & Attendance Management System for Colleges
 
-## Tech Stack
-- **Backend**: Node.js + Express + Prisma ORM
-- **Database**: PostgreSQL
-- **Frontend**: React + Vite + Chart.js
-- **Auth**: JWT + bcrypt
+A full-stack college management platform with intelligent attendance tracking, prediction engine, assignments, timetable, and multi-role access control.
+
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://your-app-url.com)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
 
-## Setup
+## ✨ Features
 
-> **No PostgreSQL installation needed!** Abd Tracker uses PGlite — an embedded Postgres that runs entirely in Node.js.
+### 📊 For Students
+- **Smart Attendance Dashboard** - Real-time attendance tracking with visual analytics
+- **Prediction Engine** - Know exactly how many classes you can miss or must attend
+- **What-If Simulator** - See your attendance % before attending/missing a class
+- **Risk Alerts** - 🔴 Danger / 🟡 Warning / 🟢 Safe status indicators
+- **Assignment Tracker** - Track pending, completed, and overdue assignments
+- **Interactive Timetable** - Weekly schedule with today's classes highlighted
+- **Real-time Notifications** - Stay updated on attendance and assignments
 
-### 1. Start the embedded database (Terminal 1)
+### 👨‍🏫 For Teachers
+- **Quick Attendance Marking** - Mark attendance for entire class in seconds
+- **Assignment Management** - Create and track assignments across classes
+- **Class Overview** - View student attendance statistics and risk levels
+- **Bulk Actions** - Mark all present/absent with one click
+
+### 👨‍💼 For Admins
+- **Student Management** - Search, view, and manage all students
+- **Class Management** - Create and organize classes by year, stream, and division
+- **Subject Management** - Add subjects to classes with custom codes
+- **Analytics Dashboard** - View attendance risk distribution across college
+- **Multi-College Support** - Manage multiple college branches
+
+---
+
+## 🚀 Tech Stack
+
+### Backend
+- **Node.js** + **Express** - RESTful API
+- **Prisma ORM** - Type-safe database access
+- **PostgreSQL** - Robust relational database
+- **JWT** - Secure authentication
+- **bcrypt** - Password hashing
+
+### Frontend
+- **React** - Modern UI library
+- **Vite** - Lightning-fast build tool
+- **Chart.js** - Beautiful data visualizations
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+- Node.js 18+ 
+- PostgreSQL 14+
+
+### 1. Clone the repository
 ```bash
-npm run db
+git clone https://github.com/AbdurrahMan0070/Abd-Tracker.git
+cd Abd-Tracker
 ```
-This starts PGlite on port 5432. Keep this terminal open.
 
-### 2. Set up tables + seed data (Terminal 2, run once)
+### 2. Install dependencies
 ```bash
-npm run db:push
+# Backend
+npm install
+
+# Frontend
+cd client
+npm install
+cd ..
+```
+
+### 3. Set up environment variables
+```bash
+# Copy example env file
+cp .env.example .env
+
+# Edit .env with your database credentials
+DATABASE_URL="postgresql://user:password@localhost:5432/abdtracker"
+JWT_SECRET="your-secret-key"
+TEACHER_CODE="TEACH2024"
+ADMIN_CODE="ADMIN2024"
+```
+
+### 4. Set up database
+```bash
+# Run migrations
+npx prisma migrate dev
+
+# Seed initial data
 npm run db:seed
 ```
 
-### 3. Start the backend (Terminal 2)
+### 5. Start the application
 ```bash
+# Terminal 1 - Backend
 npm run dev
-```
-Backend runs on **http://localhost:5000**
 
-### 4. Start the frontend (Terminal 3)
-```bash
+# Terminal 2 - Frontend
 cd client
 npm run dev
 ```
-Frontend runs on **http://localhost:3000**
+
+**Backend**: http://localhost:5000  
+**Frontend**: http://localhost:3000
 
 ---
 
-## Default Logins (after seeding)
+## 🔐 Default Login Credentials
 
-| Role    | Phone        | Password    |
-|---------|-------------|-------------|
-| Admin   | 9999999999  | admin123    |
-| Teacher | 8888888888  | teacher123  |
+After seeding, use these credentials to test:
 
-Students register themselves at `/register`.
+| Role    | Phone      | Password   |
+|---------|------------|------------|
+| Admin   | 9999999999 | admin123   |
+| Teacher | 8888888888 | teacher123 |
 
----
-
-## Features
-
-### Phase 1 – Core
-- Student registration with Junior (11th/12th) and Degree (FY/SY/TY) support
-- Streams: Science, Commerce, Arts (Junior) | CS, BAF, BCOM, BMS, BCA (Degree)
-- 6 semesters for degree students
-- Attendance dashboard with subject-wise breakdown
-- **Prediction engine**: can miss X classes, must attend Y classes
-- **What-if simulator**: see % if you attend/miss next class
-- Risk alerts: 🔴 Danger / 🟡 Warning / 🟢 Safe
-
-### Phase 2 – Features
-- Assignment tracking with status (Pending/Completed/Overdue)
-- Weekly timetable with today highlight
-- Notification system
-
-### Phase 3 – Platform
-- Teacher panel: mark attendance, create assignments
-- Admin panel: student search, class management, subject management
-- Role-based access (Student / Teacher / Admin)
-- Analytics dashboard with risk distribution chart
+Students can register at `/register`
 
 ---
 
-## College Structure
+## 🏗️ Project Structure
+
+```
+Abd-Tracker/
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── api/           # API client
+│   │   ├── components/    # Reusable components
+│   │   ├── context/       # React context (Auth)
+│   │   ├── pages/         # Page components
+│   │   └── assets/        # Images, icons
+│   └── public/
+├── src/                   # Express backend
+│   ├── routes/           # API routes
+│   └── lib/              # Prisma client
+├── prisma/
+│   ├── schema.prisma     # Database schema
+│   └── seed.js           # Seed data
+└── README.md
+```
+
+---
+
+## 🎯 API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Student registration
+- `POST /api/auth/teacher-register` - Teacher registration
+- `POST /api/auth/admin-register` - Admin registration
+- `POST /api/auth/login` - Login (all roles)
+
+### Student
+- `GET /api/attendance` - Get attendance records
+- `GET /api/assignments` - Get assignments
+- `GET /api/timetable` - Get weekly timetable
+- `GET /api/notifications` - Get notifications
+- `GET /api/events` - Get college events
+
+### Teacher
+- `GET /api/admin/classes` - Get assigned classes
+- `POST /api/admin/attendance` - Mark attendance
+- `POST /api/admin/assignments` - Create assignment
+
+### Admin
+- `GET /api/admin/students` - Search students
+- `GET /api/admin/classes` - Manage classes
+- `POST /api/admin/subjects` - Add subjects
+
+---
+
+## 🎓 College Structure
 
 ```
 College
-├── Junior
-│   ├── 11th Std
-│   │   ├── Science (Physics, Chemistry, Biology, Maths, English, Hindi, CS, PE, EVS)
-│   │   ├── Commerce (Accounts, Economics, Business Studies, Maths, English, Hindi, IT, PE)
-│   │   └── Arts (History, Geography, Pol. Science, Sociology, English, Hindi, Psychology, PE)
-│   └── 12th Std (same streams)
-└── Degree
-    ├── FY → SEM1, SEM2
-    ├── SY → SEM3, SEM4
-    └── TY → SEM5, SEM6
-        Streams: CS | BAF | BCOM | BMS | BCA | OTHER
+├── Junior (11th & 12th)
+│   ├── Science
+│   ├── Commerce
+│   └── Arts
+└── Degree (FY, SY, TY)
+    ├── CS (Computer Science)
+    ├── BAF (Banking & Finance)
+    ├── BCOM (Commerce)
+    ├── BMS (Management Studies)
+    ├── BCA (Computer Applications)
+    └── OTHER
 ```
+
+Each class has:
+- **6 Semesters** (for degree)
+- **Multiple Divisions** (A, B, C, D)
+- **Subject-wise attendance tracking**
+
+---
+
+## 🚀 Deployment
+
+### Deploy on Render (Recommended)
+
+See [RENDER_DEPLOY.md](RENDER_DEPLOY.md) for detailed instructions.
+
+**Quick steps:**
+1. Create PostgreSQL database on Render
+2. Deploy backend as Web Service
+3. Deploy frontend as Static Site
+4. Seed database from local machine
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+**Abdurrahman**
+
+- GitHub: [@AbdurrahMan0070](https://github.com/AbdurrahMan0070)
+
+---
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ for college students and administrators
+- Inspired by the need for better attendance management systems
+- Special thanks to all contributors
+
+---
+
+## 📧 Support
+
+For support, email your-email@example.com or open an issue on GitHub.
+
+---
+
+<div align="center">
+  <strong>⭐ Star this repo if you find it helpful!</strong>
+</div>

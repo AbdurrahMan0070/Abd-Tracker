@@ -1,0 +1,266 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── ENUMS ───────────────────────────────────────────────────────────────────
+
+enum StudentType {
+  JUNIOR   // 11th / 12th
+  DEGREE   // FY / SY / TY
+}
+
+enum JuniorStd {
+  STD_11
+  STD_12
+}
+
+enum JuniorStream {
+  SCIENCE
+  COMMERCE
+  ARTS
+}
+
+enum DegreeYear {
+  FY
+  SY
+  TY
+}
+
+enum DegreeStream {
+  CS
+  BAF
+  BCOM
+  BMS
+  BCA
+  OTHER
+}
+
+enum Semester {
+  SEM1
+  SEM2
+  SEM3
+  SEM4
+  SEM5
+  SEM6
+}
+
+enum Division {
+  A
+  B
+  C
+  D
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  ADMIN
+}
+
+enum AssignmentStatus {
+  PENDING
+  COMPLETED
+  OVERDUE
+}
+
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+// ─── COLLEGE ─────────────────────────────────────────────────────────────────
+
+model College {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  classes  Class[]
+  users    User[]
+  events   Event[]
+}
+
+// ─── CLASS ───────────────────────────────────────────────────────────────────
+
+model Class {
+  id           Int           @id @default(autoincrement())
+  collegeId    Int
+  studentType  StudentType
+
+  // Junior fields
+  juniorStd    JuniorStd?
+  juniorStream JuniorStream?
+
+  // Degree fields
+  degreeYear   DegreeYear?
+  degreeStream DegreeStream?
+  semester     Semester?
+
+  division     Division
+  createdAt    DateTime      @default(now())
+
+  college      College       @relation(fields: [collegeId], references: [id])
+  students     Student[]
+  subjects     Subject[]
+  assignments  Assignment[]
+  timetable    Timetable[]
+}
+
+// ─── SUBJECT ─────────────────────────────────────────────────────────────────
+
+model Subject {
+  id          Int    @id @default(autoincrement())
+  classId     Int
+  name        String
+  code        String?
+
+  class       Class        @relation(fields: [classId], references: [id])
+  attendance  Attendance[]
+  assignments Assignment[]
+  timetable   Timetable[]
+}
+
+// ─── USER (Auth) ─────────────────────────────────────────────────────────────
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String?  @unique
+  phone        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(STUDENT)
+  collegeId    Int?
+  createdAt    DateTime @default(now())
+
+  college  College?  @relation(fields: [collegeId], references: [id])
+  student  Student?
+  teacher  Teacher?
+  events   Event[]
+}
+
+// ─── STUDENT ─────────────────────────────────────────────────────────────────
+
+model Student {
+  rollNo    String   @id
+  userId    Int      @unique
+  name      String
+  classId   Int
+  createdAt DateTime @default(now())
+
+  user        User         @relation(fields: [userId], references: [id])
+  class       Class        @relation(fields: [classId], references: [id])
+  attendance  Attendance[]
+  assignments StudentAssignment[]
+  notifications Notification[]
+}
+
+// ─── TEACHER ─────────────────────────────────────────────────────────────────
+
+model Teacher {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  name      String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+// ─── ATTENDANCE ──────────────────────────────────────────────────────────────
+
+model Attendance {
+  id              Int      @id @default(autoincrement())
+  studentRollNo   String
+  subjectId       Int
+  attended        Int      @default(0)
+  total           Int      @default(0)
+  updatedAt       DateTime @updatedAt
+
+  student  Student  @relation(fields: [studentRollNo], references: [rollNo])
+  subject  Subject  @relation(fields: [subjectId], references: [id])
+
+  @@unique([studentRollNo, subjectId])
+}
+
+// ─── ASSIGNMENT ──────────────────────────────────────────────────────────────
+
+model Assignment {
+  id          Int      @id @default(autoincrement())
+  classId     Int
+  subjectId   Int
+  title       String
+  description String?
+  deadline    DateTime
+  createdAt   DateTime @default(now())
+
+  class    Class    @relation(fields: [classId], references: [id])
+  subject  Subject  @relation(fields: [subjectId], references: [id])
+  studentAssignments StudentAssignment[]
+}
+
+model StudentAssignment {
+  id           Int              @id @default(autoincrement())
+  studentRollNo String
+  assignmentId Int
+  status       AssignmentStatus @default(PENDING)
+  completedAt  DateTime?
+
+  student    Student    @relation(fields: [studentRollNo], references: [rollNo])
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+
+  @@unique([studentRollNo, assignmentId])
+}
+
+// ─── TIMETABLE ───────────────────────────────────────────────────────────────
+
+model Timetable {
+  id        Int    @id @default(autoincrement())
+  classId   Int
+  subjectId Int
+  day       Day
+  startTime String // "09:00"
+  endTime   String // "10:00"
+
+  class   Class   @relation(fields: [classId], references: [id])
+  subject Subject @relation(fields: [subjectId], references: [id])
+}
+
+// ─── EVENTS ──────────────────────────────────────────────────────────────────
+
+model Event {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  venue        String
+  eventDate    DateTime
+  startTime    String
+  endTime      String?
+  organizer    String
+  organizerRole String  @default("STUDENT") // STUDENT | TEACHER | ADMIN
+  collegeId    Int?
+  createdBy    Int
+  whatsappLink String?
+  createdAt    DateTime @default(now())
+
+  college College? @relation(fields: [collegeId], references: [id])
+  creator User     @relation(fields: [createdBy], references: [id])
+}
+
+
+model Notification {
+  id            Int      @id @default(autoincrement())
+  studentRollNo String
+  message       String
+  type          String   // "attendance" | "assignment" | "timetable"
+  read          Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  student Student @relation(fields: [studentRollNo], references: [rollNo])
+}

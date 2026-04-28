@@ -17,7 +17,13 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/student', require('./routes/student'));
 app.use('/api/events', require('./routes/events'));
 
-app.get('/api/health', (req, res) => res.json({ status: 'ok', app: 'Abd Tracker' }));
+app.get('/api/health', (_req, res) => res.json({ status: 'ok', app: 'Abd Tracker' }));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Abd Tracker API running on port ${PORT}`));
+// Export for Vercel
+module.exports = app;
+
+// Only listen if not in serverless environment
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Abd Tracker API running on port ${PORT}`));
+}

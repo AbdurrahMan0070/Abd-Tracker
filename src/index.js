@@ -18,9 +18,16 @@ app.use('/api/student', require('./routes/student'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/lostfound', require('./routes/lostfound'));
 app.use('/api/seed', require('./routes/seed'));
+app.use('/api/health', require('./routes/health'));
 
-app.get('/api/health', (_req, res) => res.json({ status: 'ok', app: 'Abd Tracker' }));
-app.get('/', (_req, res) => res.json({ status: 'ok', message: 'Abd Tracker API is running' }));
+app.get('/', (_req, res) => res.json({ 
+  status: 'ok', 
+  message: 'Abd Tracker API is running',
+  endpoints: {
+    seed: '/api/seed - Seed the database',
+    health: '/api/health/db - Check database status',
+  }
+}));
 
 // Export for Vercel
 module.exports = app;

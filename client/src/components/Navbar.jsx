@@ -1,6 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { GraduationCap, Bell, LogOut, LayoutDashboard, BookOpen, Calendar, ClipboardList, Users, Settings } from 'lucide-react';
+import { GraduationCap, Bell, LogOut, LayoutDashboard, BookOpen, Calendar, ClipboardList, Users, Settings, Search } from 'lucide-react';
 
 export default function Navbar({ notifCount = 0 }) {
   const { user, logout } = useAuth();
@@ -15,6 +15,7 @@ export default function Navbar({ notifCount = 0 }) {
     { to: '/assignments', label: 'Assignments', icon: ClipboardList },
     { to: '/timetable', label: 'Timetable', icon: Calendar },
     { to: '/events', label: 'Events', icon: Bell },
+    { to: '/lostfound', label: 'Lost & Found', icon: Search },
   ];
 
   const teacherLinks = [
@@ -22,12 +23,14 @@ export default function Navbar({ notifCount = 0 }) {
     { to: '/teacher/mark-attendance', label: 'Mark Attendance', icon: BookOpen },
     { to: '/teacher/assignments', label: 'Assignments', icon: ClipboardList },
     { to: '/events', label: 'Events', icon: Bell },
+    { to: '/lostfound', label: 'Lost & Found', icon: Search },
   ];
 
   const adminLinks = [
     { to: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/admin/students', label: 'Students', icon: Users },
     { to: '/admin/classes', label: 'Classes', icon: Settings },
+    { to: '/lostfound', label: 'Lost & Found', icon: Search },
   ];
 
   const links = user?.role === 'ADMIN' ? adminLinks : user?.role === 'TEACHER' ? teacherLinks : studentLinks;

@@ -76,6 +76,29 @@ enum Day {
   SATURDAY
 }
 
+enum LostFoundType {
+  LOST
+  FOUND
+}
+
+enum LostFoundStatus {
+  ACTIVE
+  RESOLVED
+  EXPIRED
+}
+
+enum ItemCategory {
+  PHONE
+  WALLET
+  BOOKS
+  LAPTOP
+  ACCESSORIES
+  DOCUMENTS
+  CLOTHING
+  KEYS
+  OTHER
+}
+
 // ─── COLLEGE ─────────────────────────────────────────────────────────────────
 
 model College {
@@ -83,9 +106,10 @@ model College {
   name      String   @unique
   createdAt DateTime @default(now())
 
-  classes  Class[]
-  users    User[]
-  events   Event[]
+  classes      Class[]
+  users        User[]
+  events       Event[]
+  lostAndFound LostAndFound[]
 }
 
 // ─── CLASS ───────────────────────────────────────────────────────────────────
@@ -263,4 +287,27 @@ model Notification {
   createdAt     DateTime @default(now())
 
   student Student @relation(fields: [studentRollNo], references: [rollNo])
+}
+
+// ─── LOST & FOUND ────────────────────────────────────────────────────────────
+
+model LostAndFound {
+  id            Int              @id @default(autoincrement())
+  type          LostFoundType    // LOST or FOUND
+  itemName      String
+  description   String
+  category      ItemCategory
+  location      String           // Where lost/found
+  date          DateTime         // When lost/found
+  studentRollNo String
+  studentName   String
+  phone         String
+  classInfo     String           // e.g., "FY CS A"
+  status        LostFoundStatus  @default(ACTIVE)
+  imageUrl      String?          // Optional image
+  collegeId     Int
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  college College @relation(fields: [collegeId], references: [id])
 }

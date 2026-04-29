@@ -16,6 +16,7 @@ app.use('/api/notifications', require('./routes/notifications'));
 app.use('/api/admin', require('./routes/admin'));
 app.use('/api/student', require('./routes/student'));
 app.use('/api/events', require('./routes/events'));
+app.use('/api/lostfound', require('./routes/lostfound'));
 
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', app: 'Abd Tracker' }));
 app.get('/', (_req, res) => res.json({ status: 'ok', message: 'Abd Tracker API is running' }));

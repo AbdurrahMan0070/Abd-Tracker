@@ -13,6 +13,9 @@ import Assignments from './pages/Assignments';
 import Timetable from './pages/Timetable';
 import Notifications from './pages/Notifications';
 import Events from './pages/Events';
+import LostAndFound from './pages/LostAndFound';
+import CreateLostFound from './pages/CreateLostFound';
+import MyLostFoundPosts from './pages/MyLostFoundPosts';
 
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 import MarkAttendance from './pages/teacher/MarkAttendance';
@@ -54,6 +57,11 @@ function AppRoutes() {
 
       {/* Events — accessible by all logged-in users */}
       <Route path="/events" element={<ProtectedRoute roles={['STUDENT', 'TEACHER', 'ADMIN']}><AppLayout><Events /></AppLayout></ProtectedRoute>} />
+
+      {/* Lost & Found — accessible by all logged-in users */}
+      <Route path="/lostfound" element={<ProtectedRoute roles={['STUDENT', 'TEACHER', 'ADMIN']}><AppLayout><LostAndFound /></AppLayout></ProtectedRoute>} />
+      <Route path="/lostfound/create" element={<ProtectedRoute roles={['STUDENT', 'TEACHER', 'ADMIN']}><AppLayout><CreateLostFound /></AppLayout></ProtectedRoute>} />
+      <Route path="/lostfound/my-posts" element={<ProtectedRoute roles={['STUDENT', 'TEACHER', 'ADMIN']}><AppLayout><MyLostFoundPosts /></AppLayout></ProtectedRoute>} />
 
       {/* Teacher Routes */}
       <Route path="/teacher"                   element={<ProtectedRoute roles={['TEACHER']}><AppLayout><TeacherDashboard /></AppLayout></ProtectedRoute>} />

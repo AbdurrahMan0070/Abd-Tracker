@@ -10,20 +10,27 @@ You're getting **404 errors** when registering students because your database on
 
 ---
 
-## ⚡ Quick Fix (5 Minutes)
+## ⚡ Quick Fix (3 Minutes)
 
-### Option 1: Just Want It Fixed (Recommended)
+### 🆓 Option 1: Free Tier (No Shell Access) - RECOMMENDED
+Read: **FREE_TIER_FIX.md** 
+- Works without Shell access
+- Seed via browser URL
+- Done in 3 minutes
+- **Use this if you can't access Shell on Render!**
+
+### Option 2: With Shell Access
 Read: **CHECKLIST.md** 
 - Simple checkbox list
 - Follow step by step
 - Done in 5 minutes
 
-### Option 2: Want to Understand Too
+### Option 3: Want to Understand Too
 Read in this order:
 1. **QUICK_FIX.md** - The fix
 2. **UNDERSTANDING_THE_ISSUE.md** - Why it broke
 
-### Option 3: Need Detailed Instructions
+### Option 4: Need Detailed Instructions
 Read: **FIX_RENDER_DEPLOYMENT.md**
 - Complete guide
 - Troubleshooting tips
@@ -31,7 +38,7 @@ Read: **FIX_RENDER_DEPLOYMENT.md**
 
 ---
 
-## 🎬 TL;DR - Do This Now
+## 🎬 TL;DR - Do This Now (FREE TIER)
 
 1. Go to Render dashboard
 2. Open your backend service
@@ -39,8 +46,9 @@ Read: **FIX_RENDER_DEPLOYMENT.md**
 4. Paste: `npm install && npx prisma generate && npx prisma migrate deploy`
 5. Save → Manual Deploy → Clear cache & deploy
 6. Wait 5 minutes
-7. Shell tab → Run: `npm run db:seed`
-8. Test your app!
+7. Open browser → Go to: `https://YOUR-BACKEND.onrender.com/api/seed`
+8. See success message!
+9. Test your app!
 
 ---
 
@@ -48,7 +56,8 @@ Read: **FIX_RENDER_DEPLOYMENT.md**
 
 | File | Purpose | When to Use |
 |------|---------|-------------|
-| **CHECKLIST.md** | Step-by-step checklist | When fixing the issue |
+| **FREE_TIER_FIX.md** ⭐ | Free tier solution (no Shell) | **USE THIS!** If Shell doesn't work |
+| **CHECKLIST.md** | Step-by-step checklist | When you have Shell access |
 | **QUICK_FIX.md** | Fast instructions | When you're in a hurry |
 | **FIX_RENDER_DEPLOYMENT.md** | Detailed guide | When you want full details |
 | **UNDERSTANDING_THE_ISSUE.md** | Explanation | When you want to learn why |

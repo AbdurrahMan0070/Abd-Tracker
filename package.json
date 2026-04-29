@@ -6,7 +6,8 @@
   "scripts": {
     "db": "node node_modules/@electric-sql/pglite-socket/dist/scripts/server.js --db ./pglite-data --max-connections 10",
     "start": "node src/index.js",
-    "build": "npx prisma generate && npx prisma migrate deploy",
+    "build": "npx prisma generate",
+    "build:render": "npx prisma generate && npx prisma migrate deploy",
     "dev": "nodemon src/index.js",
     "dev:full": "node node_modules/@electric-sql/pglite-socket/dist/scripts/server.js --db ./pglite-data --max-connections 10 --run \"nodemon src/index.js\" --include-database-url",
     "db:push": "node prisma/setup-db.js",

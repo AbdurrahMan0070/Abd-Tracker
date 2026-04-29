@@ -29,9 +29,6 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Prisma
-prisma/migrations/
-
 # Vercel (not using)
 .vercel
 vercel.json
